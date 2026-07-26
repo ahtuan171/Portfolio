@@ -49,23 +49,33 @@ match the original reference's grayscale mood more directly.
   pattern: crop with `sharp`, keep color/exposure edits to CSS only, and
   remove the old file from `public/images/` instead of leaving it orphaned.
 - The logo mark ([public/images/logo-v.png](public/images/logo-v.png), used
-  in [components/Header.tsx](components/Header.tsx) next to the "VICTOR."
-  wordmark, and as [app/icon.png](app/icon.png) for the favicon) is a crop
-  of just the "V." from
-  [design-reference/VICTOR~4.SVG](design-reference/VICTOR~4.SVG) (an SVG
-  with a big serif "V" + dot + a separate "VICTOR" wordmark — only the V+dot
-  portion is used, since the header already spells out "VICTOR." in text
-  right next to it). Made by rendering a trimmed-down copy of the SVG
-  (just the `<text>V</text>` and `<circle>` elements, dropping the
-  `VICTOR` text element) via `sharp` at 4x density for crisp edges, then
-  `.trim()`-ing to the tight bounding box.
-  - A **previous** logo (`logo-t.png`, from `design-reference/logo_T.png`,
-    a chrome "T" glyph) was replaced by this one and deleted from both
-    `public/images/` and `design-reference/`. If swapping the logo again,
-    follow the same pattern: render/derive into `public/images/`, delete
-    the old asset, and regenerate `app/icon.png` from the new mark (see
-    the one-off resize+composite-onto-black-square script used for both —
-    not saved as a repo script, just re-derive it with `sharp` if needed).
+  in [components/Header.tsx](components/Header.tsx) next to the "VICTOR"
+  wordmark, and as [app/icon.png](app/icon.png) for the favicon) is a chrome
+  "V" glyph, derived from source art the user dropped at
+  [design-reference/logo-v.png](design-reference/logo-v.png) (opaque, black
+  background — same visual family/style as a previous "T" version, see
+  below). Processed the same way as that earlier logo: crop to bounding box,
+  then convert the glyph's **luminance to the alpha channel** (white RGB,
+  alpha = grayscale value) via a one-off `sharp` script — not a flat
+  background-color removal, since the source has soft/gradient chrome
+  edges a hard chroma-key would leave jagged.
+  - This is the **second** logo iteration. The first was a crop of just
+    "V." (letter + dot, no chrome effect) from
+    [design-reference/VICTOR~4.SVG](design-reference/VICTOR~4.SVG); before
+    that, a chrome "T" glyph from `design-reference/logo_T.png`. Both
+    earlier source files and generated assets were deleted when superseded
+    — don't expect them to still be around.
+  - **Naming collision to watch for**: the source art and the final site
+    asset are both named `logo-v.png`, just in different folders
+    (`design-reference/logo-v.png` = raw opaque source,
+    `public/images/logo-v.png` = processed transparent asset actually used
+    by the app). Don't confuse the two or overwrite one with the other.
+  - If swapping the logo again: drop the new source art in
+    `design-reference/`, derive the transparent asset into
+    `public/images/logo-v.png` (reuse the luminance-as-alpha `sharp`
+    approach if the source has soft/gradient edges), regenerate
+    `app/icon.png` from it, and delete whatever it superseded from both
+    folders.
 - ESLint 9 flat config ([eslint.config.mjs](eslint.config.mjs)) importing
   `eslint-config-next/core-web-vitals` directly — **not** via `FlatCompat`,
   which throws a circular-JSON error with this eslint-config-next version.
@@ -173,10 +183,13 @@ edit the arrays/JSX directly.
 ## Conventions
 
 - All copy is in Vietnamese, with one deliberate exception: the hero
-  headline in `About.tsx` is the single English word "Discipline." (the
+  headline in `About.tsx` is the single English word "Discipline" (the
   user asked for this specifically, replacing an earlier Vietnamese
-  three-line slogan). Don't Vietnamese-ify it back without being asked;
-  otherwise keep new copy in Vietnamese.
+  three-line slogan; the trailing period was later removed too, along
+  with the one after "VICTOR" in the header wordmark — both are
+  intentionally bare, don't add punctuation back). Don't Vietnamese-ify
+  the headline back without being asked; otherwise keep new copy in
+  Vietnamese.
 - Server components by default; only `Header.tsx` is a client component
   (needs `useState` for the mobile menu toggle). Don't add `"use client"`
   elsewhere unless genuinely needed.

@@ -7,7 +7,7 @@ export default function About() {
       <div className="grid items-center gap-14 md:grid-cols-2">
         <div>
           <p className="eyebrow mb-4">Giới thiệu</p>
-          <h1 className="section-heading text-shadow-glow">Discipline.</h1>
+          <h1 className="section-heading text-shadow-glow">Discipline</h1>
 
           <p className="mt-8 max-w-md font-body text-lg leading-relaxed text-bone-dim">
             Mình là <span className="text-bone">Phạm Anh Tuấn</span> —

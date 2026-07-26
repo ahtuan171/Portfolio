@@ -22,7 +22,7 @@ export default function Header() {
           className="flex items-center gap-3 font-display text-3xl tracking-wide text-bone"
         >
           <Image src={logo} alt="" priority className="h-8 w-auto" />
-          VICTOR<span className="text-chrome">.</span>
+          VICTOR
         </a>
 
         <nav className="hidden gap-10 md:flex">
