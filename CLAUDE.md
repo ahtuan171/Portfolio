@@ -48,17 +48,24 @@ match the original reference's grayscale mood more directly.
   this one and deleted — if cropping a new avatar photo, follow the same
   pattern: crop with `sharp`, keep color/exposure edits to CSS only, and
   remove the old file from `public/images/` instead of leaving it orphaned.
-- The logo mark ([public/images/logo-t.png](public/images/logo-t.png), used
+- The logo mark ([public/images/logo-v.png](public/images/logo-v.png), used
   in [components/Header.tsx](components/Header.tsx) next to the "VICTOR."
-  wordmark, and as [app/icon.png](app/icon.png) for the favicon) was derived
-  from [design-reference/logo_T.png](design-reference/logo_T.png) — a chrome
-  "T" glyph on an opaque black square. It was cropped to its bounding box
-  and converted to a transparent PNG by using the glyph's **luminance as
-  the alpha channel** (white RGB, alpha = grayscale value) via a one-off
-  `sharp` script — not just a background-color removal, since the source
-  had soft/gradient edges a hard chroma-key would leave jagged. If this
-  logo ever needs regenerating (new source art, different crop), reuse that
-  luminance-as-alpha approach rather than a flat transparency trick.
+  wordmark, and as [app/icon.png](app/icon.png) for the favicon) is a crop
+  of just the "V." from
+  [design-reference/VICTOR~4.SVG](design-reference/VICTOR~4.SVG) (an SVG
+  with a big serif "V" + dot + a separate "VICTOR" wordmark — only the V+dot
+  portion is used, since the header already spells out "VICTOR." in text
+  right next to it). Made by rendering a trimmed-down copy of the SVG
+  (just the `<text>V</text>` and `<circle>` elements, dropping the
+  `VICTOR` text element) via `sharp` at 4x density for crisp edges, then
+  `.trim()`-ing to the tight bounding box.
+  - A **previous** logo (`logo-t.png`, from `design-reference/logo_T.png`,
+    a chrome "T" glyph) was replaced by this one and deleted from both
+    `public/images/` and `design-reference/`. If swapping the logo again,
+    follow the same pattern: render/derive into `public/images/`, delete
+    the old asset, and regenerate `app/icon.png` from the new mark (see
+    the one-off resize+composite-onto-black-square script used for both —
+    not saved as a repo script, just re-derive it with `sharp` if needed).
 - ESLint 9 flat config ([eslint.config.mjs](eslint.config.mjs)) importing
   `eslint-config-next/core-web-vitals` directly — **not** via `FlatCompat`,
   which throws a circular-JSON error with this eslint-config-next version.
@@ -121,13 +128,12 @@ components/
   Footer.tsx      # contact email, social links
 public/
   images/victor-portrait.jpg   # avatar in use — cropped from IMG_2298.jpg
-  images/logo-t.png            # logo mark in use — see below
+  images/logo-v.png            # logo mark in use — see below
 design-reference/
-  logo_T.png                    # source logo artwork (opaque, black background)
+  VICTOR~4.SVG                  # source logo artwork (SVG: "V." + "VICTOR" wordmark)
   nils-template-reference.png  # original layout/style reference screenshot
   Gioi_thieu_ve_Toi.md          # source bio notes the content was written from
   IMG_2298.jpg                  # source photo for the current avatar (uncropped)
-  IMG_8740.PNG                  # source photo for a previous, replaced avatar
 ```
 
 ## Content — what's real vs. still placeholder
@@ -176,7 +182,12 @@ edit the arrays/JSX directly.
   elsewhere unless genuinely needed.
 - No test suite, no CMS, no backend — this is a static single-page site.
   Don't introduce a database, API routes, or auth unless explicitly asked.
-- Not yet a git repository — `git init` before committing if the user asks.
+- Git repo, hosted at `github.com/ahtuan171/Porfolio` (`main` branch), with
+  a GitHub Actions CI workflow at
+  [.github/workflows/ci.yml](.github/workflows/ci.yml) running
+  `eslint` + `next build` on every push/PR to `main`. Deployed on Vercel
+  (auto-deploys `main`, default Next.js build settings, no environment
+  variables needed — the app doesn't read `process.env` anywhere).
 - Don't fabricate biographical details (dates, employers, quotes,
   proficiency percentages) to fill a section that looks empty — leave a
   clearly-marked gap or ask, as done above for education dates and location.

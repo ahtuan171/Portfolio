@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import logo from "@/public/images/logo-t.png";
+import logo from "@/public/images/logo-v.png";
 
 const links = [
   { href: "#about", label: "Về tôi" },
