@@ -9,26 +9,26 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: "#0a0a0a",
+          DEFAULT: "#0B0D10",
           50: "#f5f5f4",
           100: "#e5e5e3",
           200: "#c7c7c4",
           300: "#9c9c98",
-          400: "#6b6b68",
+          400: "#2A2D34",
           500: "#454542",
           600: "#2c2c2a",
           700: "#1c1c1b",
-          800: "#121211",
-          900: "#050505",
+          800: "#121417",
+          900: "#08090b",
         },
         bone: {
-          DEFAULT: "#ece9e2",
-          dim: "#adaaa2",
-          muted: "#6f6d68",
+          DEFAULT: "#F5F2E8",
+          dim: "#b8b4a8",
+          muted: "#8A8F98",
         },
         chrome: {
-          DEFAULT: "#ffffff",
-          dim: "#d4d4d1",
+          DEFAULT: "#FF1F35",
+          dim: "#A81222",
         },
       },
       fontFamily: {

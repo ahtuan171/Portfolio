@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import logo from "@/public/images/logo-v.png";
+import Spidey from "@/components/Spidey";
 
 const links = [
-  { href: "#about", label: "Về tôi" },
-  { href: "#resume", label: "Hồ sơ" },
-  { href: "#skills", label: "Kỹ năng" },
-  { href: "#contact", label: "Liên hệ" },
+  { href: "#about", label: "About" },
+  { href: "#stack", label: "Stack" },
+  { href: "#projects", label: "Projects" },
+  { href: "#numbers", label: "Numbers" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -21,7 +21,7 @@ export default function Header() {
           href="#top"
           className="flex items-center gap-3 font-display text-3xl tracking-wide text-bone"
         >
-          <Image src={logo} alt="" priority className="h-8 w-auto" />
+          <Spidey state="awake" className="h-9 w-auto" glow />
           VICTOR
         </a>
 
@@ -38,7 +38,7 @@ export default function Header() {
         </nav>
 
         <button
-          aria-label="Mở menu"
+          aria-label="Open menu"
           onClick={() => setOpen((v) => !v)}
           className="chrome-ring flex h-10 w-10 items-center justify-center text-chrome md:hidden"
         >

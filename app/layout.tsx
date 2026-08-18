@@ -23,7 +23,7 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Victor — Phạm Anh Tuấn",
   description:
-    "Trang giới thiệu cá nhân của Victor (Phạm Anh Tuấn) — sinh viên Công nghệ Thông tin.",
+    "Personal portfolio of Victor (Phạm Anh Tuấn) — Computer Science student.",
 };
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="vi"
+      lang="en"
       className={`${anton.variable} ${inter.variable} ${mono.variable}`}
     >
       <body className="film-grain">{children}</body>

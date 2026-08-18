@@ -13,19 +13,27 @@ const socials = [
       <path d="M13.5 21v-7.6h2.55l.38-2.96h-2.93V8.55c0-.86.24-1.44 1.47-1.44h1.57V4.46A21 21 0 0 0 14.3 4.3c-2.25 0-3.79 1.37-3.79 3.89v2.25H8v2.96h2.51V21h2.99Z" />
     ),
   },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/tu%E1%BA%A5n-ph%E1%BA%A1m-49a6a4356/?locale=en",
+    icon: (
+      <path d="M6.94 8.5H3.56V21h3.38V8.5ZM5.25 3a1.97 1.97 0 1 0 0 3.94A1.97 1.97 0 0 0 5.25 3ZM21 21h-3.38v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.61-2.38 3.27V21h-3.38V8.5h3.24v1.71h.05c.45-.85 1.56-1.75 3.2-1.75 3.42 0 4.05 2.25 4.05 5.18V21Z" />
+    ),
+  },
 ];
 
 export default function Footer() {
   return (
     <footer id="contact" className="mx-auto max-w-6xl px-6 py-16 md:px-10">
-      <div className="ornament-divider mb-12">
-        <span>✦</span>
+      <div className="mb-12">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/assets/footer.svg" alt="Thanks for swinging by" className="w-full" />
       </div>
 
       <div className="grid gap-10 md:grid-cols-2">
         <div>
           <h4 className="font-display text-2xl uppercase tracking-wide text-bone">
-            Liên hệ
+            Contact
           </h4>
           <a
             href="mailto:ahtuan1701@gmail.com"
@@ -36,7 +44,7 @@ export default function Footer() {
         </div>
         <div>
           <h4 className="font-display text-2xl uppercase tracking-wide text-bone">
-            Kết nối
+            Connect
           </h4>
           <div className="mt-3 flex gap-4">
             {socials.map((s) => (
@@ -59,6 +67,9 @@ export default function Footer() {
 
       <p className="mt-16 text-center font-mono text-xs uppercase tracking-widest text-bone-muted">
         © {new Date().getFullYear()} Phạm Anh Tuấn (Victor)
+      </p>
+      <p className="mt-2 text-center font-mono text-xs italic text-bone-muted/70">
+        Built with curiosity, caffeine, and a little bit of web-slinging.
       </p>
     </footer>
   );

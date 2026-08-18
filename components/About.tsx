@@ -1,25 +1,42 @@
 import Image from "next/image";
 import portrait from "@/public/images/victor-portrait.jpg";
+import Spidey from "@/components/Spidey";
 
 export default function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 pt-16 md:px-10 md:pt-28">
       <div className="grid items-center gap-14 md:grid-cols-2">
         <div>
-          <p className="eyebrow mb-4">Giới thiệu</p>
-          <h1 className="section-heading text-shadow-glow">Discipline</h1>
+          <div className="mb-8 flex items-center gap-3">
+            <Spidey state="coffee" className="h-9 w-auto" />
+            <h1 className="section-heading">about</h1>
+          </div>
 
-          <p className="mt-8 max-w-md font-body text-lg leading-relaxed text-bone-dim">
-            Mình là <span className="text-bone">Phạm Anh Tuấn</span> —
-            Victor — sinh năm 2006, hiện là sinh viên ngành Công nghệ Thông
-            tin tại Đại học Khoa học Tự Nhiên. Mình tin vào kỷ luật, học qua
-            dự án thực tế, và xây năng lực từng ngày thay vì chỉ dừng ở lý
-            thuyết.
+          <p className="max-w-md font-body text-lg leading-relaxed text-bone-dim">
+            I&apos;m <span className="text-bone">Phạm Anh Tuấn</span> —
+            Victor — born in 2006, a Computer Science student at the
+            University of Science, VNU-HCM. I&apos;m currently exploring
+            the intersection of software development, data, automation,
+            and AI.
           </p>
           <p className="mt-4 max-w-md font-body text-lg leading-relaxed text-bone-dim">
-            Ngoài giờ học: đọc sách phát triển bản thân, tập gym gần như mỗi
-            ngày, chơi cầu lông, và viết nhật ký để tự nhìn lại chính mình —
-            giữ đầu óc tỉnh táo giữa những mục tiêu dài hạn.
+            I&apos;m learning C++, Python, web application development, and
+            data analysis, while building projects that turn ideas into
+            useful, interactive products. My career direction is Data
+            Analytics, with a growing interest in UI/UX design and AI
+            automation.
+          </p>
+
+          <p className="mt-6 max-w-md rounded border border-ink-400/40 bg-ink-800/60 px-4 py-3 font-mono text-sm text-bone-muted">
+            idea <span className="text-chrome">→</span> build{" "}
+            <span className="text-chrome">→</span> automate{" "}
+            <span className="text-chrome">→</span> analyze{" "}
+            <span className="text-chrome">→</span> improve
+          </p>
+
+          <p className="mt-4 max-w-md font-body text-base italic leading-relaxed text-bone-muted">
+            &ldquo;I like building things, understanding how they work, and
+            finding ways to make them better.&rdquo;
           </p>
 
           <a
@@ -34,7 +51,7 @@ export default function About() {
         <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden border border-ink-400/40">
           <Image
             src={portrait}
-            alt="Chân dung Phạm Anh Tuấn (Victor)"
+            alt="Portrait of Phạm Anh Tuấn (Victor)"
             fill
             priority
             className="object-cover"
