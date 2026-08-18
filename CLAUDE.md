@@ -126,14 +126,17 @@ effect — don't revert any without being asked again:
   which throws a circular-JSON error with this eslint-config-next version.
   `next lint` is removed in Next 16; run `npx eslint .` instead.
 - **This is no longer a pure static site.** [app/api/pet/route.ts](app/api/pet/route.ts)
-  is a real backend route: it calls the GitHub GraphQL API server-side and
-  streams back a generated SVG. It needs a `GITHUB_TOKEN` env var (classic
+  and [app/api/activity/route.ts](app/api/activity/route.ts) are real
+  backend routes: both call the GitHub GraphQL API server-side (via the
+  shared `getContributionDays()` in [lib/github.ts](lib/github.ts)) and
+  stream back a generated SVG. They need a `GITHUB_TOKEN` env var (classic
   PAT, `read:user` scope) set locally in `.env.local` (gitignored via the
   `.env*.local` pattern) **and** on Vercel for production. `GITHUB_USERNAME`
   is optional, defaulting to `"ahtuan171"`. If the token is missing or the
-  GitHub API call fails, the route doesn't 500 — it falls back to a themed
-  placeholder card (asleep mascot, em-dash streak, "GITHUB_TOKEN not
-  configured" status) so the embed on the live homepage never shows a
+  GitHub API call fails, neither route 500s — both fall back to a themed
+  placeholder card (`/api/pet`: asleep mascot, em-dash streak, "GITHUB_TOKEN
+  not configured" status; `/api/activity`: same card shell with a centered
+  status message, no graph) so the embeds on the live homepage never show a
   broken-image icon. (A working `.env.local` with a real token already
   exists locally as of this writing — real streak data renders in dev.)
 
@@ -259,6 +262,7 @@ app/
   globals.css     # design tokens' CSS-side (@layer base/components/utilities)
   icon.svg        # favicon — Spidey mascot, see the heading-pivot note above
   api/pet/route.ts  # GitHub commit-streak SVG widget — see "Spidey mascot" above
+  api/activity/route.ts  # self-hosted weekly-contribution graph SVG (no third-party service)
 lib/
   github.ts       # GitHub GraphQL contribution-calendar fetch (needs GITHUB_TOKEN)
   pet.ts          # contribution days -> streak count + awake/sleeping state
@@ -270,7 +274,7 @@ components/        # page.tsx renders these in exactly this order
   SectionDivider.tsx # divider.svg strip — reused between every section below
   Stack.tsx          # "stack" — shields.io badges grouped by category
   Resume.tsx         # "projects" — 2×2 grid: 3 real projects + "more experiments"
-  GithubActivity.tsx # "numbers" — /api/pet commit-streak card + activity graph
+  GithubActivity.tsx # "numbers" — /api/pet commit-streak card + /api/activity graph
   TheWebIWeave.tsx   # "the web i weave" — contribution snake embed
   StatusLog.tsx      # "currently" — coding/success/confused status cards
   OffTheClock.tsx    # "off the clock" — hobbies list (4 items, no journaling)
@@ -330,9 +334,29 @@ for hobby details that predate it. Mapped one section at a time:
   the user was team lead, not repo owner; don't "fix" that URL to point
   at `ahtuan171`).
 - **numbers** ([GithubActivity.tsx](components/GithubActivity.tsx)): the
-  real `/api/pet` commit-streak card (this project's own addition, not in
-  the README) plus a live `github-readme-activity-graph.vercel.app` embed
-  matching the README's palette query params exactly.
+  real `/api/pet` commit-streak card, plus a second self-hosted card from
+  [app/api/activity/route.ts](app/api/activity/route.ts) (both project
+  additions, not in the README). **2026-08-18: switched off the README's
+  `github-readme-activity-graph.vercel.app` embed** — that free
+  third-party service intermittently returns a "Can't fetch any
+  contribution" error card (confirmed independently broken on the user's
+  live GitHub README too, same URL, same day — not a bug in this repo).
+  `app/api/activity/route.ts` reuses `getContributionDays()` from
+  [lib/github.ts](lib/github.ts) (same GraphQL call `/api/pet` already
+  makes) to build its own area/line-chart SVG — no external graph
+  service, no more dependence on a flaky third party. Plots a **rolling
+  30-day window ending today** (30 daily points, x-axis labeled `D/M`
+  every 5th day plus today, today's point drawn slightly larger) — went
+  through two earlier iterations first: weekly totals over the past year
+  (52-53 points, no labels — too dense to label) and monthly totals over
+  the past year (12 points, `Jan`…`Dec` labels) — the user asked for
+  "current month's contributions, e.g. if today is 18/8/2026 show the
+  last 30 days" specifically, i.e. a trailing window anchored on the
+  current date, not a fixed calendar bucket. If changing the window size
+  again, the label-thinning step (`labelStep` in `buildGraphSvg`) needs
+  adjusting too or labels will overlap. Same graceful-fallback pattern as
+  `/api/pet`: missing `GITHUB_TOKEN` or a failed fetch renders a themed
+  placeholder card instead of a broken image or an error string.
 - **the web i weave** ([TheWebIWeave.tsx](components/TheWebIWeave.tsx)):
   the contribution-snake SVG, embedded from
   `raw.githubusercontent.com/ahtuan171/ahtuan171/output/snake.svg` — this
@@ -394,10 +418,11 @@ edit the arrays/JSX directly.
   (needs `useState` for the mobile menu toggle). `Spidey.tsx` uses `useId`
   but stays a server component — that hook doesn't require `"use client"`.
   Don't add `"use client"` elsewhere unless genuinely needed.
-- No test suite, no CMS, no database, no auth. There **is** now one backend
-  route (`app/api/pet/route.ts`, see Stack above) — that's an intentional,
-  narrow exception for the GitHub commit-streak widget, not a green light
-  to add general-purpose API routes/auth without being asked.
+- No test suite, no CMS, no database, no auth. There **are** now two
+  backend routes (`app/api/pet/route.ts`, `app/api/activity/route.ts`, see
+  Stack above) — that's an intentional, narrow exception for GitHub-data
+  widgets, not a green light to add general-purpose API routes/auth
+  without being asked.
 - Git repo, hosted at `github.com/ahtuan171/Porfolio` (`main` branch), with
   a GitHub Actions CI workflow at
   [.github/workflows/ci.yml](.github/workflows/ci.yml) running

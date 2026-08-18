@@ -33,10 +33,12 @@ export default function GithubActivity() {
       </div>
 
       <div className="mt-16 overflow-hidden rounded-lg border border-ink-400/40 bg-ink-900 p-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://github-readme-activity-graph.vercel.app/graph?username=ahtuan171&bg_color=0B0D10&color=F5F2E8&line=FF1F35&point=FF1F35&area=true&hide_border=true"
+        <Image
+          src="/api/activity"
           alt="GitHub activity graph"
+          width={960}
+          height={280}
+          unoptimized
           className="w-full"
         />
       </div>
