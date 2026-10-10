@@ -31,7 +31,7 @@ export const THEMES = [
 
 export type ThemeId = (typeof THEMES)[number]["id"];
 
-export const DEFAULT_THEME: ThemeId = "minimalist";
+export const DEFAULT_THEME: ThemeId = "spidey";
 
 /** Cookie holding the visitor's choice (read on the server → no flash). */
 export const THEME_COOKIE = "theme";

@@ -55,7 +55,7 @@ export default function SectionHeading({
 
   if (pixelIcon) {
     return (
-      <div className="mb-8 flex items-center gap-4 md:mb-10" data-reveal>
+      <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 md:mb-10" data-reveal>
         <PixelMedallion name={pixelIcon} className="h-12 w-12" />
         <h2 id={id} className="font-display-theme text-2xl text-fg md:text-3xl">
           {title}

@@ -43,13 +43,13 @@ cùng; lựa chọn được lưu bằng cookie nên máy chủ render đúng gi
   <tr>
     <td width="50%" align="center">
       <img src="docs/screenshots/minimalist-desktop.jpg" alt="Minimalist — nền mực đen, chữ ivory, một màu nhấn slate"><br>
-      <b>Minimalist</b> <sub>(mặc định)</sub><br>
+      <b>Minimalist</b><br>
       <sub>Editorial tối giản, chất Khắc kỷ: mực đen, ivory, đá, một màu slate.</sub><br>
       <sub><i>“Some things are in our control and others not.” — Epictetus</i></sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/screenshots/spidey-desktop.jpg" alt="Spidey Universe — đen, đỏ, chữ Anton, mạng nhện và mascot pixel"><br>
-      <b>Spidey Universe</b><br>
+      <b>Spidey Universe</b> <sub>(mặc định)</sub><br>
       <sub>Đen – kem – đỏ <code>#FF1F35</code>, mạng nhện, halftone, mascot pixel.</sub><br>
       <sub><i>“With great power comes great responsibility.” — Spider-Man</i></sub>
     </td>

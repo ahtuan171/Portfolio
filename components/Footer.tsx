@@ -87,7 +87,7 @@ export default async function Footer({ items, showRss }: { items: NavItem[]; sho
           <p className="meta flex items-center gap-3">
             <Spidey state="hanging" className="h-6 w-auto" />© {new Date().getFullYear()} {displayName}
           </p>
-          <a href="#top" className="meta transition-colors hover:text-accent">
+          <a href="#top" className="meta shrink-0 whitespace-nowrap transition-colors hover:text-accent">
             {dict.footer.backToTop} <span aria-hidden>↑</span>
           </a>
         </div>

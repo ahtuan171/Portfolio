@@ -8,7 +8,7 @@ import { showDrafts } from "@/lib/site";
 export default function Placeholder({ children }: { children: ReactNode }) {
   if (!showDrafts) return null;
   return (
-    <p className="placeholder-note mt-3" role="note">
+    <p className="placeholder-note mt-3 break-words" role="note">
       <span className="font-semibold">TODO (dev only):</span> {children}
     </p>
   );
