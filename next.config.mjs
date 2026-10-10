@@ -11,6 +11,14 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // The Projects and Journey index pages were folded into Home (v3).
+  // Case studies stay at /projects/[slug].
+  async redirects() {
+    return [
+      { source: "/projects", destination: "/#projects", permanent: false },
+      { source: "/journey", destination: "/#journey", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

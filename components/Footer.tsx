@@ -1,76 +1,97 @@
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/ahtuan171",
-    icon: (
-      <path d="M12 2C6.48 2 2 6.58 2 12.17c0 4.49 2.87 8.3 6.84 9.64.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.63.07-.62.07-.62 1 .07 1.53 1.04 1.53 1.04.89 1.55 2.34 1.1 2.91.84.09-.66.35-1.1.63-1.35-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 2.5-.35c.85 0 1.71.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.18 10.18 0 0 0 22 12.17C22 6.58 17.52 2 12 2Z" />
-    ),
-  },
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/ah.tuan.769406/",
-    icon: (
-      <path d="M13.5 21v-7.6h2.55l.38-2.96h-2.93V8.55c0-.86.24-1.44 1.47-1.44h1.57V4.46A21 21 0 0 0 14.3 4.3c-2.25 0-3.79 1.37-3.79 3.89v2.25H8v2.96h2.51V21h2.99Z" />
-    ),
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/tu%E1%BA%A5n-ph%E1%BA%A1m-49a6a4356/?locale=en",
-    icon: (
-      <path d="M6.94 8.5H3.56V21h3.38V8.5ZM5.25 3a1.97 1.97 0 1 0 0 3.94A1.97 1.97 0 0 0 5.25 3ZM21 21h-3.38v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.61-2.38 3.27V21h-3.38V8.5h3.24v1.71h.05c.45-.85 1.56-1.75 3.2-1.75 3.42 0 4.05 2.25 4.05 5.18V21Z" />
-    ),
-  },
-];
+import Image from "next/image";
+import Link from "next/link";
+import Spidey from "@/components/Spidey";
+import type { NavItem } from "@/components/Header";
+import ThemeQuote from "@/components/ThemeQuote";
+import { epigraphs } from "@/content/quotes";
+import { credits } from "@/content/credits";
+import { displayName, profile } from "@/content/profile";
+import { getI18n } from "@/lib/i18n/server";
+import { classicArt } from "@/lib/themeArt";
+import { ClassicRule, CompassRose } from "@/components/ThemeArt";
 
-export default function Footer() {
+/** Site footer — contact details reachable from every page. */
+export default async function Footer({ items, showRss }: { items: NavItem[]; showRss: boolean }) {
+  const { theme, dict, t } = await getI18n();
   return (
-    <footer id="contact" className="mx-auto max-w-6xl px-6 py-16 md:px-10">
-      <div className="mb-12">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/footer.svg" alt="Thanks for swinging by" className="w-full" />
-      </div>
-
-      <div className="grid gap-10 md:grid-cols-2">
-        <div>
-          <h4 className="font-display text-2xl uppercase tracking-wide text-bone">
-            Contact
-          </h4>
-          <a
-            href="mailto:ahtuan1701@gmail.com"
-            className="mt-3 inline-block font-body text-lg text-bone-dim hover:text-chrome"
-          >
-            ahtuan1701@gmail.com
+    <footer className="site-footer border-t border-line/60">
+      <ThemeQuote />
+      {/* Classic: the journal's last page — the desk by the window at dusk,
+          his own line set as a colophon between brass rules. */}
+      {theme === "classic" && (
+        <figure className="relative isolate overflow-hidden border-b border-deco/40">
+          <Image src={classicArt.study} alt="" fill sizes="100vw" className="-z-10 object-cover object-[88%_72%]" />
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(var(--bg))_0%,rgb(var(--bg)/0.5)_30%,rgb(var(--bg)/0.45)_70%,rgb(var(--bg))_100%),radial-gradient(ellipse_55%_70%_at_50%_50%,rgb(var(--bg)/0.75),transparent_100%)]"
+          />
+          <div className="shell flex flex-col items-center py-20 text-center md:py-28">
+            <ClassicRule className="w-48" />
+            <blockquote lang="en" className="mt-8 max-w-2xl text-balance font-accent-theme text-2xl italic leading-snug text-fg md:text-[2.1rem]">
+              &ldquo;{epigraphs.classic.colophon.text}&rdquo;
+            </blockquote>
+            <figcaption className="meta mt-6 text-fg-dim">— {epigraphs.classic.colophon.author}</figcaption>
+            <CompassRose className="mt-10 h-7 w-7 text-deco" />
+          </div>
+        </figure>
+      )}
+      <div className="shell grid gap-10 py-14 md:grid-cols-12">
+        <div className="md:col-span-5">
+          <p className="font-display-theme text-3xl text-fg">{displayName}</p>
+          <p className="mt-3 max-w-sm font-body text-sm leading-relaxed text-fg-dim">{t(profile.positioning)}</p>
+          <a href={`mailto:${profile.email}`} className="link mt-5 inline-block font-body text-sm">
+            {profile.email}
           </a>
         </div>
-        <div>
-          <h4 className="font-display text-2xl uppercase tracking-wide text-bone">
-            Connect
-          </h4>
-          <div className="mt-3 flex gap-4">
-            {socials.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                className="chrome-ring flex h-11 w-11 items-center justify-center text-bone transition-colors hover:bg-bone/10 hover:text-chrome"
-                aria-label={s.label}
-              >
-                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
-                  {s.icon}
-                </svg>
-              </a>
+        <nav aria-label={dict.nav.footer} className="md:col-span-3">
+          <p className="meta mb-4">{dict.footer.pages}</p>
+          <ul className="space-y-2">
+            {items.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="font-body text-sm text-fg-dim transition-colors hover:text-accent">
+                  {item.label}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
+        </nav>
+        <div className="md:col-span-4">
+          <p className="meta mb-4">{dict.footer.elsewhere}</p>
+          <ul className="space-y-2">
+            {profile.socials.map((s) => (
+              <li key={s.label}>
+                <a href={s.href} target="_blank" rel="noreferrer" className="font-body text-sm text-fg-dim transition-colors hover:text-accent">
+                  {s.label} <span aria-hidden>↗</span>
+                </a>
+              </li>
+            ))}
+            {showRss && (
+              <li>
+                <a href="/journal/rss.xml" className="font-body text-sm text-fg-dim transition-colors hover:text-accent">
+                  {dict.footer.rss}
+                </a>
+              </li>
+            )}
+            {credits.length > 0 && (
+              <li>
+                <Link href="/about#credits" className="font-body text-sm text-fg-dim transition-colors hover:text-accent">
+                  {dict.footer.credits}
+                </Link>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
-
-      <p className="mt-16 text-center font-mono text-xs uppercase tracking-widest text-bone-muted">
-        © {new Date().getFullYear()} Phạm Anh Tuấn (Victor)
-      </p>
-      <p className="mt-2 text-center font-mono text-xs italic text-bone-muted/70">
-        Built with curiosity, caffeine, and a little bit of web-slinging.
-      </p>
+      <div className={`shell ${theme === "minimalist" ? "" : "border-t border-line/60"}`}>
+        <div className={`flex items-center justify-between gap-4 py-6 ${theme === "minimalist" ? "border-t border-line/80" : ""}`}>
+          <p className="meta flex items-center gap-3">
+            <Spidey state="hanging" className="h-6 w-auto" />© {new Date().getFullYear()} {displayName}
+          </p>
+          <a href="#top" className="meta transition-colors hover:text-accent">
+            {dict.footer.backToTop} <span aria-hidden>↑</span>
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }

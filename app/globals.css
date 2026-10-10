@@ -2,78 +2,1017 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Four artistic worlds
+   --------------------------------------------------------------------------
+   <html data-theme="spidey | pixel | classic | minimalist"> — set on the
+   server from the `theme` cookie (lib/i18n/server.ts). One deliberate
+   appearance per theme; there is no light/dark mode.
+
+   Colors are "r g b" triplets (Tailwind opacity modifiers work). Everything
+   else a world changes — type, borders, shadows, textures, image treatment,
+   motion, mascot — is a token below. Components read tokens; where a world
+   needs different markup, the component receives the theme on the server
+   (see components/ThemeArt.tsx, ProjectCard, JourneyTimeline).
+   ========================================================================== */
+
+[data-theme="spidey"] {
+  --bg: 11 13 16;
+  --surface: 18 20 24;
+  --surface-2: 26 29 34;
+  --line: 42 45 52;
+  --fg: 245 242 232;
+  --fg-dim: 201 197 185;
+  --fg-muted: 142 147 156;
+  --accent: 255 31 53;
+  --accent-2: 255 107 120;
+  --on-accent: 11 13 16;
+  --deco: 168 18 34;
+  --deco-2: 245 242 232;
+}
+
+[data-theme="pixel"] {
+  /* Dusk forest — sampled from the hero artwork. */
+  --bg: 10 16 18;
+  --surface: 14 24 28;
+  --surface-2: 20 35 42;
+  --line: 42 59 66;
+  --fg: 237 230 211;
+  --fg-dim: 197 194 178;
+  --fg-muted: 143 154 151;
+  --accent: 230 176 100;
+  --accent-2: 155 191 142;
+  --on-accent: 10 16 18;
+  --deco: 46 94 99;
+  --deco-2: 94 110 102;
+}
+
+/* Classic: dark academia. The ground is a charcoal-and-walnut study
+   (charcoal #171511, walnut #241B15, leather #3A2A20); aged-paper sheets
+   (.classic-paper: ivory #DCCBA9, parchment #BBA582) are laid on it for
+   the dossier, the chronicle and reading surfaces. Muted brass #947449 is
+   decorative only (rules, ornaments, markers — 4.2:1, never text); a
+   lighter brass carries text accents on dark. Faded burgundy #542C2A is
+   the accent on paper (links, highlights), used sparingly.
+   .classic-dark re-scopes to the study inside a sheet. */
+[data-theme="classic"],
+[data-theme="classic"] :is(.classic-dark, .site-header, .site-footer) {
+  --bg: 23 21 17;
+  --surface: 36 27 21;
+  --surface-2: 58 42 32;
+  --line: 86 68 48;
+  --fg: 220 203 169;
+  --fg-dim: 187 165 130;
+  --fg-muted: 168 148 114;
+  --accent: 196 166 112;
+  --accent-2: 187 165 130;
+  --on-accent: 23 21 17;
+  --deco: 148 116 73;
+  --deco-2: 112 88 58;
+  --burgundy: 84 44 42;
+}
+[data-theme="classic"] .classic-paper {
+  --bg: 220 203 169;
+  --surface: 229 216 190;
+  --surface-2: 187 165 130;
+  --line: 170 146 108;
+  --fg: 23 21 17;
+  --fg-dim: 58 42 32;
+  --fg-muted: 94 72 52;
+  --accent: 84 44 42;
+  --accent-2: 84 44 42;
+  --on-accent: 229 216 190;
+  --deco: 148 116 73;
+  --deco-2: 84 44 42;
+}
+/* Tokens built from colors resolve where they're declared, so re-derive
+   them inside each scope. */
+[data-theme="classic"],
+[data-theme="classic"] :is(.classic-dark, .site-header, .site-footer, .classic-paper) {
+  --card-bg: rgb(var(--surface));
+}
+[data-theme="classic"] :is(.classic-dark, .site-footer) {
+  color: rgb(var(--fg));
+}
+/* A sheet of aged paper: fine grain, foxed edges, a natural shadow. */
+[data-theme="classic"] .classic-paper {
+  color: rgb(var(--fg));
+  background:
+    radial-gradient(ellipse 110% 90% at 50% 45%, transparent 58%, rgb(96 70 40 / 0.2) 100%),
+    var(--paper),
+    linear-gradient(172deg, rgb(229 215 186) 0%, rgb(var(--bg)) 48%, rgb(210 191 156) 100%);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.35),
+    0 40px 70px -40px rgb(0 0 0 / 0.9);
+}
+
+:where(:root),
+[data-theme="minimalist"] {
+  /* Editorial minimalism, after dark: deep ink ground, warm ivory text,
+     muted stone, one slate. ink #191A19 · ivory #F2F0E9 · stone #737570 ·
+     slate #52636B. The slate is lifted (#8FA5AE) so links and the active
+     nav read on ink (6.9:1); `fg-muted` is stone lifted for small text
+     (6.2:1); the exact stone is `deco` (decorative only, never text).
+     Primary buttons are ivory, never coloured. */
+  --bg: 25 26 25;
+  --surface: 32 33 32;
+  --surface-2: 40 41 39;
+  --line: 62 64 61;
+  --fg: 242 240 233;
+  --fg-dim: 201 200 192;
+  --fg-muted: 154 156 150;
+  --accent: 143 165 174;
+  --accent-2: 201 200 192;
+  --on-accent: 25 26 25;
+  --deco: 115 117 112;
+  --deco-2: 242 240 233;
+  color-scheme: dark;
+}
+
+/* ---- Spidey Universe ----------------------------------------------------- */
+[data-theme="spidey"] {
+  --font-display: var(--font-anton);
+  --font-body: var(--font-inter);
+  --font-meta: var(--font-jetbrains);
+  --font-accent: var(--font-anton);
+  --font-article: var(--font-newsreader);
+  --font-prose: var(--font-newsreader);
+  --accent-style: normal;
+  --display-weight: 400;
+  --display-stretch: 100%;
+  --display-transform: uppercase;
+  --display-tracking: 0.01em;
+  --display-scale: 1;
+  --meta-adjust: none;
+  --eyebrow-prefix: "";
+  --radius: 3px;
+  --card-bg: rgb(var(--surface));
+  --card-border: 1px solid rgb(var(--line));
+  --card-shadow: none;
+  --card-shadow-hover: 5px 5px 0 0 rgb(var(--accent) / 0.35);
+  --btn-border-width: 1px;
+  --btn-shadow: none;
+  --hover-lift: -3px;
+  --texture-image: var(--grain);
+  --texture-opacity: 0.07;
+  --texture-blend: overlay;
+  --page-background:
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgb(var(--accent) / 0.09), transparent),
+    radial-gradient(rgb(var(--accent) / 0.07) 1px, transparent 1.5px);
+  --page-background-size: auto, 11px 11px;
+  --media-filter: none;
+  --reveal-distance: 18px;
+  --reveal-duration: 0.7s;
+  --reveal-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Must stay a valid filter function; .mascot-glow appends to it. */
+  --mascot-filter: saturate(1);
+  --mascot-display: inline-block;
+}
+
+/* ---- Pixel Art ------------------------------------------------------------ */
+/* A quiet fantasy world at dusk: misty forest artwork (lib/themeArt.ts),
+   deep teal shadows, amber only where light would be, ivory text. Pixel
+   type is reserved for small labels; headings and reading text are a
+   screen serif. */
+[data-theme="pixel"] {
+  --font-display: var(--font-spectral);
+  --font-body: var(--font-spectral);
+  --font-meta: var(--font-vt323);
+  --font-accent: var(--font-spectral);
+  --font-article: var(--font-spectral);
+  --font-prose: var(--font-spectral);
+  --accent-style: italic;
+  --display-weight: 500;
+  --display-stretch: 100%;
+  --display-transform: none;
+  --display-tracking: -0.005em;
+  --display-scale: 0.95;
+  /* VT323 has a small x-height: scale labels up to stay legible. */
+  --meta-adjust: 0.66;
+  --eyebrow-prefix: "";
+  --radius: 2px;
+  /* Translucent dark panel; four 3px "rivets" at the corners give a
+     restrained pixel frame. */
+  --rivet: rgb(var(--deco-2) / 0.9);
+  --card-bg:
+    linear-gradient(var(--rivet), var(--rivet)) left 3px top 3px / 3px 3px no-repeat,
+    linear-gradient(var(--rivet), var(--rivet)) right 3px top 3px / 3px 3px no-repeat,
+    linear-gradient(var(--rivet), var(--rivet)) left 3px bottom 3px / 3px 3px no-repeat,
+    linear-gradient(var(--rivet), var(--rivet)) right 3px bottom 3px / 3px 3px no-repeat,
+    rgb(var(--surface) / 0.86);
+  --card-border: 1px solid rgb(var(--line));
+  --card-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.35), 0 18px 40px -28px rgb(0 0 0 / 0.8);
+  --card-shadow-hover: inset 0 0 0 1px rgb(var(--accent) / 0.25), 0 22px 48px -26px rgb(0 0 0 / 0.85);
+  --btn-border-width: 1px;
+  --btn-shadow: inset 0 0 0 2px rgb(var(--bg)), inset 0 0 0 3px rgb(var(--fg) / 0.25);
+  --hover-lift: -2px;
+  --texture-image: none;
+  --texture-opacity: 0;
+  --texture-blend: normal;
+  --page-background:
+    radial-gradient(ellipse 80% 40% at 20% 100%, rgb(var(--deco) / 0.18), transparent),
+    linear-gradient(180deg, rgb(var(--bg)) 0%, rgb(12 22 26) 100%);
+  --page-background-size: auto;
+  --media-filter: none;
+  --reveal-distance: 10px;
+  --reveal-duration: 0.9s;
+  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --mascot-filter: saturate(1);
+  --mascot-display: none;
+}
+
+/* ---- Classic -------------------------------------------------------------- */
+[data-theme="classic"] {
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-ebgaramond);
+  --font-meta: var(--font-ebgaramond);
+  --font-accent: var(--font-cormorant);
+  --font-article: var(--font-cormorant);
+  --font-prose: var(--font-ebgaramond);
+  --accent-style: italic;
+  --display-weight: 600;
+  --display-stretch: 100%;
+  --display-transform: none;
+  --display-tracking: -0.005em;
+  --display-scale: 1;
+  /* EB Garamond has a small x-height: labels get a touch larger. */
+  --meta-adjust: 0.44;
+  --eyebrow-prefix: "";
+  --radius: 0px;
+  /* A walnut panel with a hairline edge; brass only on hover. */
+  --card-bg: rgb(var(--surface));
+  --card-border: 1px solid rgb(var(--line));
+  --card-shadow: inset 0 1px 0 rgb(255 236 200 / 0.03), 0 24px 48px -30px rgb(0 0 0 / 0.85);
+  --card-shadow-hover: inset 0 1px 0 rgb(255 236 200 / 0.05), 0 30px 56px -28px rgb(0 0 0 / 0.95);
+  --btn-border-width: 1px;
+  --btn-shadow: none;
+  --hover-lift: -2px;
+  /* Film grain over the study; paper sheets carry their own fibre. */
+  --texture-image: var(--grain);
+  --texture-opacity: 0.05;
+  --texture-blend: overlay;
+  /* Charcoal into walnut, warmed where lamplight would fall. */
+  --page-background:
+    radial-gradient(ellipse 70% 50% at 78% 8%, rgb(84 58 36 / 0.32), transparent 70%),
+    linear-gradient(180deg, rgb(23 21 17) 0%, rgb(33 26 20) 45%, rgb(23 21 17) 100%);
+  --page-background-size: auto;
+  /* Screenshots and photos stay true; only a breath of warmth. */
+  --media-filter: sepia(0.06) saturate(0.96);
+  --gilt: linear-gradient(145deg, #6e5634 0%, #c4a874 25%, #8a7048 50%, #d2b98a 70%, #7d6340 100%);
+  /* Quiet: fade only, no travel. */
+  --reveal-distance: 0px;
+  --reveal-duration: 1s;
+  --reveal-ease: ease;
+  --mascot-filter: saturate(1);
+  --mascot-display: none;
+}
+
+/* ---- Minimalist ------------------------------------------------------------
+   Light, airy, exact. Hairlines instead of boxes, one light serif for
+   display, Inter for everything else. The Stoic note is restraint:
+   Roman numerals for order, no ornament, nothing that moves far. */
+:where(:root),
+[data-theme="minimalist"] {
+  --font-display: var(--font-notoserifdisplay);
+  --font-body: var(--font-inter);
+  --font-meta: var(--font-inter);
+  --font-accent: var(--font-notoserifdisplay);
+  --font-article: var(--font-notoserifdisplay);
+  --font-prose: var(--font-newsreader);
+  --accent-style: italic;
+  --display-weight: 380;
+  --display-stretch: 100%;
+  --display-transform: none;
+  --display-tracking: -0.03em;
+  --display-scale: 0.82;
+  --meta-adjust: none;
+  --eyebrow-prefix: "";
+  --radius: 0px;
+  --card-bg: transparent;
+  --card-border: 1px solid rgb(var(--line));
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --btn-border-width: 1px;
+  --btn-shadow: none;
+  --hover-lift: 0px;
+  /* A barely-there grain; no backdrop. */
+  --texture-image: var(--grain);
+  --texture-opacity: 0.04;
+  --texture-blend: overlay;
+  --page-background: none;
+  --page-background-size: auto;
+  /* Real screenshots keep their own colour. Only the portrait is calmed
+     (`.theme-portrait` below). */
+  --media-filter: none;
+  --reveal-distance: 10px;
+  --reveal-duration: 1.2s;
+  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --mascot-filter: saturate(1);
+  --mascot-display: none;
+}
+
+/* Shared texture sources. */
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.32 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
-    @apply bg-ink text-bone font-body;
-    background-color: #0b0d10;
-    background-image: radial-gradient(
-      ellipse 70% 50% at 50% -10%,
-      rgba(255, 31, 53, 0.07),
-      transparent
-    );
+    @apply bg-bg font-body text-fg antialiased;
+    background-image: var(--page-background);
+    background-size: var(--page-background-size);
+    background-repeat: no-repeat, repeat;
+    min-height: 100vh;
   }
 
   ::selection {
-    background: #ff1f35;
-    color: #0b0d10;
+    background: rgb(var(--accent));
+    color: rgb(var(--on-accent));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   ::-webkit-scrollbar {
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #0b0d10;
+    background: rgb(var(--bg));
   }
   ::-webkit-scrollbar-thumb {
-    background: #2a2d34;
+    background: rgb(var(--line));
     border-radius: 999px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #a81222;
-  }
 }
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
 
 @layer components {
+  .shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10;
+  }
+
   .eyebrow {
-    @apply font-mono text-xs md:text-sm uppercase tracking-widest2 text-chrome/60 font-medium;
+    @apply font-mono text-xs font-medium uppercase tracking-widest2 text-accent;
+  }
+  .eyebrow::before {
+    content: var(--eyebrow-prefix);
   }
 
-  .section-heading {
-    @apply font-mono text-3xl md:text-5xl font-bold uppercase text-chrome leading-tight tracking-[0.12em];
+  .meta {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-fg-muted;
   }
 
-  .ornament-divider {
-    @apply relative flex items-center justify-center gap-4 text-chrome/50 font-mono text-xs uppercase tracking-widest2;
+  /* Labels in pixel fonts need a larger x-height to stay legible. */
+  :is(.font-mono, .eyebrow, .meta, .tag, .btn, .text-link) {
+    font-size-adjust: var(--meta-adjust);
   }
-  .ornament-divider::before,
-  .ornament-divider::after {
+
+  .font-display-theme {
+    font-family: var(--font-display), Georgia, serif;
+    font-stretch: var(--display-stretch);
+    text-transform: var(--display-transform);
+    letter-spacing: var(--display-tracking);
+    font-weight: var(--display-weight);
+  }
+
+  .font-accent-theme {
+    font-family: var(--font-accent), Georgia, serif;
+    font-style: var(--accent-style);
+    font-stretch: var(--display-stretch);
+  }
+
+  .hero-name {
+    @apply font-display-theme text-fg;
+    font-size: calc(var(--display-scale) * clamp(3.4rem, 1.6rem + 7.2vw, 8rem));
+    line-height: 0.92;
+  }
+
+  .page-title {
+    @apply font-display-theme text-fg;
+    font-size: calc(var(--display-scale) * clamp(2.8rem, 1.6rem + 4.6vw, 5.75rem));
+    line-height: 0.95;
+  }
+
+  .section-title {
+    @apply font-display-theme text-fg;
+    font-size: calc(var(--display-scale) * clamp(2.1rem, 1.5rem + 2.4vw, 3.5rem));
+    line-height: 1;
+  }
+
+  .article-title {
+    font-family: var(--font-article), Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  [data-theme="minimalist"] .article-title {
+    font-weight: 400;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+  }
+
+  .card-interactive {
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .card-interactive:hover,
+  .card-interactive:focus-within {
+    box-shadow: var(--card-shadow-hover);
+  }
+  [data-theme="spidey"] .card-interactive:hover,
+  [data-theme="spidey"] .card-interactive:focus-within {
+    border-color: rgb(var(--accent) / 0.65);
+  }
+  [data-theme="classic"] .card-interactive:hover,
+  [data-theme="classic"] .card-interactive:focus-within {
+    border-color: rgb(var(--deco));
+  }
+  [data-theme="minimalist"] .card-interactive:hover,
+  [data-theme="minimalist"] .card-interactive:focus-within {
+    border-color: rgb(var(--fg) / 0.55);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card-interactive:hover {
+      transform: translateY(var(--hover-lift));
+    }
+    .card-interactive .cover-media {
+      transition:
+        transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+        filter 0.6s ease;
+    }
+    .card-interactive:hover .cover-media {
+      transform: scale(1.03);
+    }
+  }
+
+  /* Real images (portrait, screenshots) take each world's treatment. */
+  .theme-media {
+    filter: var(--media-filter);
+  }
+
+  .frame-ticks {
+    position: relative;
+  }
+  [data-theme="spidey"] .frame-ticks::before,
+  [data-theme="spidey"] .frame-ticks::after {
     content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgb(var(--accent));
+    pointer-events: none;
+    z-index: 2;
+  }
+  [data-theme="spidey"] .frame-ticks::before {
+    top: -5px;
+    left: -5px;
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+  }
+  [data-theme="spidey"] .frame-ticks::after {
+    bottom: -5px;
+    right: -5px;
+    border-bottom: 1.5px solid;
+    border-right: 1.5px solid;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-theme px-5 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] transition-colors;
+    border: var(--btn-border-width) solid;
+    box-shadow: var(--btn-shadow);
+  }
+  .btn-primary {
+    @apply btn border-accent bg-accent text-accent-on hover:bg-accent/85;
+  }
+  .btn-ghost {
+    @apply btn border-line bg-transparent text-fg hover:border-accent hover:text-accent;
+  }
+  [data-theme="pixel"] .btn {
+    font-family: var(--font-body), Georgia, serif;
+    font-size-adjust: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+  [data-theme="pixel"] .btn-primary {
+    background: transparent;
+    color: rgb(var(--fg));
+    border-color: rgb(var(--fg) / 0.85);
+  }
+  [data-theme="pixel"] .btn-primary:hover,
+  [data-theme="pixel"] .btn-ghost:hover {
+    color: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+    background: rgb(var(--accent) / 0.06);
+  }
+  [data-theme="pixel"] .btn-ghost {
+    border-color: rgb(var(--fg) / 0.45);
+  }
+  /* Classic labels: small capitals, like a bookplate — not shouted
+     uppercase, and large enough to read. */
+  [data-theme="classic"] :is(.btn, .eyebrow, .meta, .text-link) {
+    text-transform: none;
+    font-variant-caps: all-small-caps;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+  }
+  [data-theme="classic"] .outcome-badge {
+    text-transform: none;
+    font-variant-caps: all-small-caps;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    padding: 0 0.5rem 0.1rem;
+  }
+  [data-theme="classic"] .btn {
+    font-size: 1.05rem;
+    padding: 0.6rem 1.35rem 0.7rem;
+  }
+  [data-theme="classic"] .btn-ghost {
+    border-color: rgb(var(--fg) / 0.32);
+  }
+  [data-theme="classic"] .btn-ghost:hover {
+    border-color: rgb(var(--deco));
+    color: rgb(var(--fg));
+  }
+  [data-theme="classic"] .eyebrow {
+    color: rgb(var(--fg-muted));
+  }
+  [data-theme="classic"] .text-link {
+    font-size: 1.05rem;
+  }
+  /* Body text in EB Garamond reads small: match a modern x-height.
+     Display faces keep their own sizing. */
+  [data-theme="classic"] body {
+    font-size-adjust: 0.44;
+  }
+  [data-theme="classic"] :is(.font-display-theme, .font-accent-theme, .hero-name, .page-title, .section-title, .article-title, .font-hand) {
+    font-size-adjust: none;
+  }
+
+  .tag {
+    @apply inline-flex items-center rounded-theme border border-line px-2 py-0.5 font-mono text-[11px] text-fg-dim;
+  }
+  [data-theme="pixel"] .tag {
+    background: rgb(var(--surface-2) / 0.7);
+    font-family: var(--font-body), Georgia, serif;
+    font-size-adjust: none;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+  }
+  [data-theme="classic"] .tag {
+    border: 0;
+    padding: 0 0.4rem 0 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: rgb(var(--fg-muted));
+  }
+
+  .link {
+    @apply text-fg underline decoration-accent/50 decoration-1 underline-offset-4 transition-colors hover:text-accent hover:decoration-accent;
+  }
+
+  .text-link {
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-fg-dim transition-colors hover:text-accent;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-theme focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-accent-on;
+  }
+
+  .placeholder-note {
+    @apply rounded-theme border border-dashed border-accent/60 bg-accent/5 px-3 py-2 font-code text-xs text-accent;
+  }
+
+}
+
+/* Classic: the study's furniture — masthead, frames, mounts, bands. */
+@layer components {
+  /* Walnut masthead with a double brass rule; nav set in serif, centred from lg up,
+     divided by small brass lozenges. */
+  [data-theme="classic"] .site-header {
+    background: linear-gradient(180deg, rgb(44 33 25) 0%, rgb(36 27 21) 55%, rgb(30 23 18) 100%);
+    border-bottom-color: rgb(var(--deco) / 0.6);
+    box-shadow: 0 14px 30px -18px rgb(0 0 0 / 0.8);
+  }
+  [data-theme="classic"] .site-header::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -4px;
     height: 1px;
-    width: 3rem;
-    background: linear-gradient(to right, transparent, currentColor);
-    opacity: 0.4;
+    background: rgb(var(--deco) / 0.3);
+    pointer-events: none;
   }
-  .ornament-divider::after {
-    background: linear-gradient(to left, transparent, currentColor);
+  [data-theme="classic"] .site-nav {
+    margin-left: auto;
+    padding-right: 1.5rem;
+    border-right: 1px solid rgb(var(--deco) / 0.45);
+  }
+  /* From lg up the nav sits on the page's centre line (the logo and the
+     controls flank it); below that it stays set right. */
+  @media (min-width: 1024px) {
+    [data-theme="classic"] .site-header > .shell {
+      position: relative;
+    }
+    [data-theme="classic"] .site-nav {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      transform: translate(-50%, -50%);
+    }
+  }
+  [data-theme="classic"] .site-nav ul {
+    gap: 1.6rem;
+  }
+  [data-theme="classic"] .site-nav li + li::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-right: 1.6rem;
+    vertical-align: 0.2em;
+    transform: rotate(45deg);
+    border: 1px solid rgb(var(--deco) / 0.8);
+  }
+  [data-theme="classic"] .site-nav-link {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.03em;
+    font-size-adjust: none;
+  }
+  [data-theme="classic"] .site-nav-link > span {
+    height: 1px;
+    bottom: -0.15rem;
   }
 
-  .paper-card {
-    @apply bg-ink-800/60 border border-ink-400/40 backdrop-blur-sm;
+  /* Hairline engraved frame: a brass rule with an inner echo. Pair with
+     <ClassicCorners/> for the corner ornaments. */
+  .classic-frame {
+    position: relative;
+    border: 1px solid rgb(var(--deco) / 0.55);
+    outline: 1px solid rgb(var(--deco) / 0.28);
+    outline-offset: -7px;
   }
 
-  .chrome-ring {
-    @apply border border-bone/30 rounded-full;
+  /* Architectural arch: a semicircle on any width (radii are clamped). */
+  .classic-arch {
+    border-radius: 9999px 9999px 0 0;
+  }
+
+  /* A picture mounted in a walnut frame with a brass slip. */
+  .classic-picture-frame {
+    padding: 0.7rem;
+    background: linear-gradient(160deg, rgb(70 51 36), rgb(36 27 21) 45%, rgb(52 38 28));
+    border: 1px solid rgb(var(--deco) / 0.7);
+    box-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.5),
+      0 2px 0 rgb(0 0 0 / 0.4),
+      0 40px 70px -36px rgb(0 0 0 / 0.95);
+  }
+  .classic-picture-frame > * {
+    box-shadow: 0 0 0 1px rgb(var(--deco) / 0.85), 0 0 0 5px rgb(23 21 17 / 0.9);
+  }
+
+  /* A screenshot mounted on a parchment mat (passe-partout). */
+  .classic-mount {
+    padding: 0.85rem;
+    background:
+      var(--paper),
+      linear-gradient(160deg, rgb(226 211 182), rgb(205 186 150));
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.45),
+      0 28px 50px -30px rgb(0 0 0 / 0.95);
+  }
+  .classic-mount > * {
+    box-shadow: 0 0 0 1px rgb(110 84 50 / 0.6);
+  }
+
+  /* Dark band with lamplight from one side (hero, page headers, contact). */
+  .classic-band {
+    background:
+      radial-gradient(ellipse 60% 80% at 85% 35%, rgb(96 66 40 / 0.28), transparent 70%),
+      linear-gradient(180deg, rgb(30 23 18) 0%, rgb(23 21 17) 100%);
+  }
+
+  /* Drop cap on the opening paragraph of a sheet. */
+  .classic-dropcap::first-letter {
+    float: left;
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-weight: 600;
+    font-size: 3.6em;
+    line-height: 0.82;
+    padding: 0.06em 0.12em 0 0;
+    color: rgb(var(--accent));
+    font-size-adjust: none;
+  }
+
+  /* Classic: the etched portrait — a sepia-toned photograph in a
+     cartouche with concave corners (shape + brass keylines drawn by
+     <ClassicPortrait/>). */
+  .classic-etching {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    filter: drop-shadow(0 18px 18px rgb(30 22 14 / 0.35));
+  }
+  .classic-etching-photo {
+    position: absolute;
+    inset: 0;
+    clip-path: url(#classic-cartouche);
+    background: rgb(58 42 32);
+  }
+  .classic-etching-photo img {
+    filter: grayscale(0.55) sepia(0.55) contrast(1.06) brightness(0.96);
+  }
+  .classic-etching-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 42%, transparent 52%, rgb(58 36 20 / 0.5) 100%),
+      linear-gradient(180deg, rgb(255 236 200 / 0.08), transparent 40%);
+    mix-blend-mode: multiply;
   }
 }
 
-@layer utilities {
-  .text-shadow-glow {
-    text-shadow: 0 0 40px rgba(255, 31, 53, 0.25);
+/* Minimalist: editorial type, quiet controls, one slate accent. */
+@layer components {
+  [data-theme="minimalist"] .hero-name,
+  [data-theme="minimalist"] .page-title,
+  [data-theme="minimalist"] .section-title {
+    /* Vietnamese diacritics stack high: keep the leading generous. */
+    line-height: 1.08;
   }
+  /* One vertical rhythm for the home sections (replaces per-section padding). */
+  [data-theme="minimalist"] .sec {
+    padding-block: clamp(4rem, 2.5rem + 4.5vw, 6.5rem);
+  }
+  /* The name is the strongest element: a touch heavier than the headings. */
+  [data-theme="minimalist"] .hero-name {
+    font-weight: 400;
+  }
+  [data-theme="minimalist"] .section-title {
+    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.25rem);
+  }
+  [data-theme="minimalist"] .eyebrow {
+    color: rgb(var(--fg-muted));
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+  }
+  [data-theme="minimalist"] .meta {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+  }
+  [data-theme="minimalist"] .btn {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    padding: 0.7rem 1.4rem;
+  }
+  /* Primary = ink; slate only appears on hover. */
+  [data-theme="minimalist"] .btn-primary {
+    background: rgb(var(--fg));
+    border-color: rgb(var(--fg));
+    color: rgb(var(--bg));
+  }
+  [data-theme="minimalist"] .btn-primary:hover {
+    background: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+  }
+  [data-theme="minimalist"] .btn-ghost {
+    border-color: rgb(var(--fg) / 0.3);
+  }
+  [data-theme="minimalist"] .btn-ghost:hover {
+    border-color: rgb(var(--fg));
+    color: rgb(var(--fg));
+  }
+  [data-theme="minimalist"] .text-link {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-size: 0.9375rem;
+    color: rgb(var(--fg-dim));
+  }
+  [data-theme="minimalist"] .text-link:hover {
+    color: rgb(var(--accent));
+  }
+  /* Technology tags: a quiet run of words, not a row of badges. */
+  [data-theme="minimalist"] .tag {
+    border: 0;
+    background: none;
+    padding: 0;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.8125rem;
+    color: rgb(var(--fg-muted));
+  }
+  [data-theme="minimalist"] .tag + .tag {
+    margin-left: 0.5rem;
+  }
+  /* Milestone status: plain words. Only an award is filled; ongoing work
+     is underlined with a dashed rule. */
+  [data-theme="minimalist"] .outcome-badge {
+    border: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: rgb(var(--fg-muted));
+  }
+  [data-theme="minimalist"] .outcome-badge:is(.bg-accent) {
+    background: rgb(var(--fg));
+    color: rgb(var(--bg));
+    padding: 0.15rem 0.5rem;
+  }
+  [data-theme="minimalist"] .outcome-badge.border-dashed {
+    border-bottom: 1px dashed rgb(var(--deco));
+  }
+  /* The portrait: a cool, slightly desaturated print. The file is
+     untouched; this is only presentation. */
+  [data-theme="minimalist"] .theme-portrait {
+    filter: saturate(0.68) contrast(1.02) brightness(1.12);
+  }
+  [data-theme="minimalist"] .site-header {
+    background: rgb(var(--bg) / 0.86);
+    border-bottom-color: rgb(var(--line) / 0.8);
+  }
+  [data-theme="minimalist"] .prose-journal {
+    font-size: 1.15rem;
+    line-height: 1.8;
+  }
+}
+
+/* Pixel Art: the header floats over the artwork. */
+@layer components {
+  [data-theme="pixel"] .site-header {
+    background: rgb(var(--bg) / 0.55);
+    border-bottom-color: rgb(var(--line) / 0.7);
+  }
+}
+
+/* Journey timeline line per world. */
+@layer components {
+  [data-theme="spidey"] .journey-line {
+    border-left-color: rgb(var(--accent) / 0.45);
+  }
+  [data-theme="pixel"] .journey-line {
+    border-left: 1px dashed rgb(var(--deco-2) / 0.6);
+  }
+  [data-theme="classic"] .journey-line {
+    border-left-color: rgb(var(--deco) / 0.6);
+  }
+  [data-theme="minimalist"] .journey-line {
+    border-left-color: rgb(var(--line));
+  }
+}
+
+/* ==========================================================================
+   Journal prose
+   ========================================================================== */
+
+@layer components {
+  .prose-journal {
+    font-family: var(--font-prose), Georgia, serif;
+    color: rgb(var(--fg) / 0.9);
+    font-size: 1.2rem;
+    line-height: 1.75;
+  }
+  [data-theme="pixel"] .prose-journal {
+    font-size: 1.1rem;
+  }
+  [data-theme="classic"] .prose-journal {
+    font-size: 1.25rem;
+  }
+  .prose-journal > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-journal h2,
+  .prose-journal h3 {
+    font-family: var(--font-article), Georgia, serif;
+    @apply font-semibold tracking-tight text-fg;
+    line-height: 1.25;
+    scroll-margin-top: 6rem;
+  }
+  .prose-journal h2 {
+    font-size: 1.7rem;
+    margin-top: 2.2em;
+  }
+  [data-theme="classic"] .prose-journal h2 {
+    font-size: 2.05rem;
+  }
+  .prose-journal h3 {
+    font-size: 1.3rem;
+    margin-top: 1.8em;
+  }
+  /* Drop cap on the opening paragraph (Classic). */
+  [data-theme="classic"] .prose-journal > p:first-of-type::first-letter {
+    float: left;
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-weight: 600;
+    font-size: 4.2em;
+    line-height: 0.8;
+    padding: 0.08em 0.1em 0 0;
+    color: rgb(var(--accent));
+  }
+  .prose-journal .heading-anchor {
+    @apply ml-2 text-accent/0 no-underline transition-colors;
+  }
+  .prose-journal h2:hover .heading-anchor,
+  .prose-journal h3:hover .heading-anchor {
+    @apply text-accent/70;
+  }
+  .prose-journal a:not(.heading-anchor) {
+    @apply link;
+  }
+  .prose-journal strong {
+    @apply font-semibold text-fg;
+  }
+  .prose-journal ul,
+  .prose-journal ol {
+    padding-left: 1.4em;
+  }
+  .prose-journal ul {
+    list-style: disc;
+  }
+  .prose-journal ol {
+    list-style: decimal;
+  }
+  .prose-journal li + li {
+    margin-top: 0.4em;
+  }
+  .prose-journal li::marker {
+    color: rgb(var(--accent));
+  }
+  .prose-journal blockquote {
+    @apply border-l-2 border-accent pl-5 italic text-fg-dim;
+  }
+  .prose-journal :not(pre) > code {
+    @apply rounded bg-surface-2 px-1.5 py-0.5 font-code text-[0.82em] text-fg;
+  }
+  .prose-journal pre {
+    @apply overflow-x-auto rounded-theme border border-line bg-surface p-4 font-code text-sm leading-relaxed;
+  }
+  .prose-journal hr {
+    @apply my-10 border-line;
+  }
+  [data-theme="classic"] .prose-journal hr {
+    border: 0;
+    text-align: center;
+  }
+  [data-theme="classic"] .prose-journal hr::after {
+    content: "⁂";
+    color: rgb(var(--deco));
+    font-size: 1.4rem;
+  }
+  .prose-journal img {
+    @apply rounded-theme border border-line;
+    filter: var(--media-filter);
+  }
+  .prose-journal table {
+    @apply w-full border-collapse font-body text-base;
+  }
+  .prose-journal th,
+  .prose-journal td {
+    @apply border-b border-line px-3 py-2 text-left;
+  }
+}
+
+/* ==========================================================================
+   Utilities: texture, mascot, motion, theme transitions
+   ========================================================================== */
+
+@layer utilities {
   .film-grain {
     position: relative;
   }
@@ -82,8 +1021,127 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: var(--texture-opacity, 0);
+    mix-blend-mode: var(--texture-blend, overlay);
+    background-image: var(--texture-image);
+    z-index: 60;
   }
+
+  .mascot {
+    filter: var(--mascot-filter);
+    image-rendering: pixelated;
+    display: var(--mascot-display);
+  }
+  .mascot-glow {
+    filter: var(--mascot-filter) drop-shadow(0 0 10px rgb(var(--accent) / 0.4));
+  }
+
+  .pixelated {
+    image-rendering: pixelated;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--reveal-distance));
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.js [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Classic: pictures "develop" as they come into view — a slow settle
+     from a dim, slightly enlarged print. */
+  html.js[data-theme="classic"] [data-reveal] .classic-develop {
+    transform: scale(1.035);
+    filter: brightness(0.7) sepia(0.25);
+    transition:
+      transform 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.8s ease;
+    transition-delay: calc(var(--reveal-delay, 0ms) + 150ms);
+  }
+  html.js[data-theme="classic"] [data-reveal].is-revealed .classic-develop {
+    transform: none;
+    filter: none;
+  }
+
+  .status-pulse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: inherit;
+    animation: status-pulse 2.4s ease-out infinite;
+  }
+
+}
+
+@keyframes status-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Theme switch: corner reveal (components/ThemeSwitcher.tsx)
+   --------------------------------------------------------------------------
+   The script drives the animation (Web Animations API on the View
+   Transition pseudo-elements, radius computed from the viewport). These
+   rules only turn off the default cross-fade so the old world stays
+   perfectly still while the new one expands over it.
+   ========================================================================== */
+html[data-theme-switching]::view-transition-old(root),
+html[data-theme-switching]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html[data-theme-switching]::view-transition-old(theme-veil) {
+  display: none;
+}
+/* The leading ring: a soft band of the destination color at the edge of
+   the expanding circle (inner edge feathered, outer edge crisp). */
+@property --vt-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+html[data-theme-switching]::view-transition-new(theme-veil) {
+  animation: none;
+  background-color: var(--vt-color);
+  -webkit-mask-image: radial-gradient(
+    circle at var(--vt-x) var(--vt-y),
+    transparent calc(var(--vt-r) - 64px),
+    #000 calc(var(--vt-r) - 6px),
+    #000 var(--vt-r),
+    transparent calc(var(--vt-r) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at var(--vt-x) var(--vt-y),
+    transparent calc(var(--vt-r) - 64px),
+    #000 calc(var(--vt-r) - 6px),
+    #000 var(--vt-r),
+    transparent calc(var(--vt-r) + 1px)
+  );
+}
+html[data-theme-switching]::view-transition-group(theme-veil) {
+  animation: none;
+}
+
+/* Fallback (no View Transitions): a fixed veil in the destination color. */
+.theme-veil-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
 }

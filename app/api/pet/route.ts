@@ -101,17 +101,16 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    // This card is embedded directly on the live homepage — fail into a
-    // themed placeholder card instead of a broken-image icon.
-    const message = error instanceof Error ? error.message : "unknown error";
+    // This card may be embedded in READMEs or pages — fail into a themed
+    // placeholder card instead of a broken-image icon. The real cause goes
+    // to the server log only; visitors never see configuration details.
+    console.error("[api/pet] GitHub activity unavailable:", error);
     const svg = buildPetSvg({
       spiderUri: getAssetDataUri("spidey-asleep.svg"),
       streak: "—",
       streakLabel: "",
       petState: "sleeping",
-      statusText: message.includes("GITHUB_TOKEN")
-        ? "GITHUB_TOKEN not configured"
-        : "couldn't reach github",
+      statusText: "activity currently unavailable",
     });
 
     return new Response(svg, {

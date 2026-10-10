@@ -137,12 +137,9 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "unknown error";
-    const svg = buildFallbackSvg(
-      message.includes("GITHUB_TOKEN")
-        ? "GITHUB_TOKEN not configured"
-        : "couldn't reach github"
-    );
+    // Log the real cause server-side; visitors only see a friendly message.
+    console.error("[api/activity] GitHub activity unavailable:", error);
+    const svg = buildFallbackSvg("Activity currently unavailable");
 
     return new Response(svg, {
       status: 200,

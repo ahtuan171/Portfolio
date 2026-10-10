@@ -14,23 +14,39 @@ export type SpideyState =
   | "confused"
   | "error";
 
+/**
+ * Pixel mascot sprite. Decorative by default (empty alt) — pass `label`
+ * only when the sprite itself carries meaning. The `.mascot` class tints
+ * it via --mascot-filter and hides it in worlds that have no mascot
+ * (--mascot-display: only Spidey Universe shows it).
+ */
 export default function Spidey({
   state,
   className,
   glow = false,
+  label,
+  priority = false,
 }: {
   state: SpideyState;
   className?: string;
   glow?: boolean;
+  label?: string;
+  priority?: boolean;
 }) {
   return (
     <Image
       src={`/assets/spidey-${state}.svg`}
-      alt={`Spidey — ${state}`}
+      alt={label ?? ""}
+      aria-hidden={label ? undefined : true}
       width={128}
       height={72}
       unoptimized
-      className={[className, glow ? "drop-shadow-[0_0_10px_rgba(255,31,53,0.4)]" : ""]
+      priority={priority}
+      className={[
+        "mascot",
+        className,
+        glow ? "mascot-glow" : "",
+      ]
         .filter(Boolean)
         .join(" ")}
     />

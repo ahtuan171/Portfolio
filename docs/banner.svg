@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Ah Tuấn (Victor) — Portfolio, Lab &amp; Journal">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#191A19"/>
+      <stop offset="1" stop-color="#0F100F"/>
+    </linearGradient>
+    <linearGradient id="gilt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E5634"/>
+      <stop offset="0.5" stop-color="#D2B98A"/>
+      <stop offset="1" stop-color="#6E5634"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="320" fill="url(#bg)"/>
+  <rect x="12" y="12" width="1176" height="296" fill="none" stroke="#3E403D" stroke-width="1"/>
+  <rect x="20" y="20" width="1160" height="280" fill="none" stroke="#3E403D" stroke-width="0.5"/>
+
+  <!-- title -->
+  <text x="64" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="76" fill="#F2F0E9" letter-spacing="-2">Ah Tuấn</text>
+  <text x="64" y="188" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-style="italic" fill="#8FA5AE">(Victor)</text>
+  <rect x="64" y="212" width="120" height="1.5" fill="url(#gilt)"/>
+  <text x="64" y="246" font-family="Helvetica, Arial, sans-serif" font-size="15" letter-spacing="4" fill="#9A9C96">PORTFOLIO · LAB · JOURNAL</text>
+  <text x="64" y="272" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#6A6C67">Data · AI · creative software — one experiment at a time.</text>
+
+  <!-- four worlds: each a small card in its own palette -->
+  <g transform="translate(600 56)">
+    <!-- Minimalist -->
+    <g transform="translate(0 0)">
+      <rect width="120" height="208" fill="#191A19" stroke="#F2F0E9" stroke-opacity="0.5"/>
+      <rect x="14" y="20" width="60" height="6" fill="#F2F0E9"/>
+      <rect x="14" y="34" width="40" height="4" fill="#9A9C96"/>
+      <rect x="14" y="50" width="92" height="1" fill="#3E403D"/>
+      <rect x="14" y="62" width="92" height="96" fill="#2A2B29"/>
+      <rect x="14" y="168" width="36" height="3" fill="#8FA5AE"/>
+      <text x="14" y="196" font-family="Helvetica, Arial, sans-serif" font-size="10" letter-spacing="2" fill="#9A9C96">MINIMALIST</text>
+    </g>
+    <!-- Spidey -->
+    <g transform="translate(138 0)">
+      <rect width="120" height="208" fill="#0B0D10" stroke="#FF1F35" stroke-opacity="0.7"/>
+      <rect x="14" y="20" width="70" height="14" fill="#F5F2E8"/>
+      <rect x="14" y="38" width="46" height="9" fill="#FF1F35"/>
+      <path d="M120 0 L60 60 M120 30 L84 66 M120 62 L104 80 M104 0 L78 40" stroke="#FF1F35" stroke-opacity="0.5" fill="none"/>
+      <rect x="14" y="62" width="92" height="96" fill="#12141A" stroke="#2A2D34"/>
+      <rect x="14" y="168" width="48" height="10" fill="#FF1F35"/>
+      <text x="14" y="196" font-family="Helvetica, Arial, sans-serif" font-size="10" letter-spacing="2" fill="#FF6B78">SPIDEY</text>
+    </g>
+    <!-- Pixel Art -->
+    <g transform="translate(276 0)">
+      <rect width="120" height="208" fill="#0A1012" stroke="#2E5E63"/>
+      <circle cx="92" cy="30" r="9" fill="#EDE6D3"/>
+      <path d="M0 150 L24 112 L40 128 L62 96 L84 130 L104 108 L120 140 L120 150Z" fill="#14232A"/>
+      <path d="M0 150 L120 150 L120 160 L0 160Z" fill="#0E181C"/>
+      <rect x="22" y="92" width="6" height="8" fill="#E6B064"/>
+      <rect x="14" y="20" width="46" height="6" fill="#EDE6D3"/>
+      <rect x="14" y="168" width="40" height="8" fill="none" stroke="#E6B064"/>
+      <text x="14" y="196" font-family="Helvetica, Arial, sans-serif" font-size="10" letter-spacing="2" fill="#9BBF8E">PIXEL ART</text>
+    </g>
+    <!-- Classic -->
+    <g transform="translate(414 0)">
+      <rect width="120" height="208" fill="#241B15" stroke="#947449"/>
+      <rect x="4" y="4" width="112" height="200" fill="none" stroke="#947449" stroke-opacity="0.4"/>
+      <path d="M30 150 L30 80 A30 30 0 0 1 90 80 L90 150Z" fill="#3A2A20" stroke="#D2B98A" stroke-opacity="0.8"/>
+      <rect x="14" y="20" width="56" height="6" fill="#DCCBA9"/>
+      <rect x="14" y="168" width="36" height="3" fill="#D2B98A"/>
+      <text x="14" y="196" font-family="Georgia, serif" font-size="11" font-style="italic" fill="#D2B98A">Classic</text>
+    </g>
+  </g>
+</svg>

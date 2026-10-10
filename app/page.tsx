@@ -1,37 +1,36 @@
-import Header from "@/components/Header";
-import Banner from "@/components/Banner";
-import About from "@/components/About";
-import SectionDivider from "@/components/SectionDivider";
-import Stack from "@/components/Stack";
-import Resume from "@/components/Resume";
-import GithubActivity from "@/components/GithubActivity";
-import TheWebIWeave from "@/components/TheWebIWeave";
-import StatusLog from "@/components/StatusLog";
-import OffTheClock from "@/components/OffTheClock";
-import Cta from "@/components/Cta";
-import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import AboutSummary from "@/components/AboutSummary";
+import SelectedWork from "@/components/SelectedWork";
+import JourneySection from "@/components/JourneySection";
+import Contact from "@/components/Contact";
+import { SectionOrnament } from "@/components/ThemeArt";
+import { getVisibleMilestones } from "@/lib/milestones";
+import { getHomeProjects } from "@/lib/projects";
 
+// Home = the portfolio showcase: hero, short intro, selected projects,
+// journey & milestones, contact. Optional sections render only with real
+// content. The journal is never previewed here.
 export default function Home() {
+  const projects = getHomeProjects();
+  const milestones = getVisibleMilestones();
+
   return (
-    <main id="top">
-      <Header />
-      <Banner />
-      <About />
-      <SectionDivider />
-      <Stack />
-      <SectionDivider />
-      <Resume />
-      <SectionDivider />
-      <GithubActivity />
-      <SectionDivider />
-      <TheWebIWeave />
-      <SectionDivider />
-      <StatusLog />
-      <SectionDivider />
-      <OffTheClock />
-      <SectionDivider />
-      <Cta />
-      <Footer />
-    </main>
+    <>
+      <Hero />
+      <AboutSummary />
+      {projects.length > 0 && (
+        <>
+          <SectionOrnament />
+          <SelectedWork projects={projects} />
+        </>
+      )}
+      {milestones.length > 0 && (
+        <>
+          <SectionOrnament />
+          <JourneySection milestones={milestones} />
+        </>
+      )}
+      <Contact />
+    </>
   );
 }
