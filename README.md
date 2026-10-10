@@ -4,8 +4,6 @@
 
 <br>
 
-[![Live site](https://img.shields.io/badge/live-porfolio--virid--zeta.vercel.app-191A19?style=for-the-badge&logo=vercel&logoColor=F2F0E9)](https://porfolio-virid-zeta.vercel.app)
-
 [![CI](https://github.com/ahtuan171/Portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/ahtuan171/Portfolio/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -17,7 +15,7 @@
 <br>
 sinh viên Công nghệ Thông tin, ĐH Khoa học Tự nhiên – ĐHQG-HCM, đang hướng tới Data Analytics.
 
-[Xem trang](https://porfolio-virid-zeta.vercel.app) · [Dự án](#-dự-án-nổi-bật) · [Chạy thử](#-chạy-thử-trên-localhost) · [Cập nhật nội dung](#-cập-nhật-nội-dung)
+[Dự án](#-dự-án-nổi-bật) · [Chạy thử](#-chạy-thử-trên-localhost) · [Cập nhật nội dung](#-cập-nhật-nội-dung)
 
 </div>
 
